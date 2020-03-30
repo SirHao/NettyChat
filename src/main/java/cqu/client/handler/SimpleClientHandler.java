@@ -1,9 +1,11 @@
 package cqu.client.handler;
 
+import cqu.Util.Session.LoginUtil;
 import cqu.protocal.EncoderDecoder.PacketEncDec;
 import cqu.protocal.Packet;
 import cqu.protocal.PacketImp.LoginRequestPacket;
 import cqu.protocal.PacketImp.LoginResponsePacket;
+import cqu.protocal.PacketImp.MessageResponsePacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -19,19 +21,17 @@ public class SimpleClientHandler extends ChannelInboundHandlerAdapter {
         System.out.println(new Date()+":welcome!");
         LoginRequestPacket loginRequest=new LoginRequestPacket();
 
-        Scanner in = new Scanner(System.in);
-        System.out.print("input username:>> ");
-        String username = in.nextLine();
-        System.out.print("input password:>> ");
-        String pwd = in.nextLine();
+//        Scanner in = new Scanner(System.in);
+//        System.out.print("input username:>> ");
+//        String username = in.nextLine();
+//        System.out.print("input password:>> ");
+//        String pwd = in.nextLine();
         loginRequest.setUserId(UUID.randomUUID().toString());
-        loginRequest.setUsername(username);
-        loginRequest.setPassword(pwd);
+        loginRequest.setUsername("username");
+        loginRequest.setPassword("pwd");
         ByteBuf byteBuf= PacketEncDec.INSTANCE.encode(ctx.alloc().ioBuffer(),loginRequest);
-        in.close();
+//        in.close();
         ctx.channel().writeAndFlush(byteBuf);
-
-
 
     }
     @Override
@@ -42,9 +42,13 @@ public class SimpleClientHandler extends ChannelInboundHandlerAdapter {
             LoginResponsePacket loginResponse=(LoginResponsePacket) packet;
             if(loginResponse.isSuccess()){
                 System.out.println(new Date()+": login sucess");
+                LoginUtil.markAsLogin(ctx.channel());
             }else {
                 System.out.println(new Date()+": login failed");
             }
+        }else if(packet instanceof MessageResponsePacket){
+            MessageResponsePacket messageResponsePacket=(MessageResponsePacket) packet;
+            System.out.println(new Date()+":receive from server:"+messageResponsePacket.getMessage());
         }
 
     }

@@ -4,9 +4,12 @@ import cqu.protocal.EncoderDecoder.PacketEncDec;
 import cqu.protocal.Packet;
 import cqu.protocal.PacketImp.LoginRequestPacket;
 import cqu.protocal.PacketImp.LoginResponsePacket;
+import cqu.protocal.PacketImp.MessageRequestPacket;
+import cqu.protocal.PacketImp.MessageResponsePacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+
 
 import java.nio.charset.Charset;
 import java.util.*;
@@ -34,6 +37,13 @@ public class SimpleServerHandler extends ChannelInboundHandlerAdapter {
             }
             ByteBuf responsebuf=PacketEncDec.INSTANCE.encode(ctx.alloc().ioBuffer(),loginRespons);
             ctx.channel().writeAndFlush(responsebuf);
+        }else if(packet instanceof MessageRequestPacket){
+            MessageRequestPacket messageRequestPacket=(MessageRequestPacket) packet;
+            System.out.println(new Date()+":receive client msg: "+messageRequestPacket.getMessage());
+            MessageResponsePacket messageResponsePacket=new MessageResponsePacket();
+            messageResponsePacket.setMessage("【server reply】"+messageRequestPacket.getMessage());
+            ByteBuf resp=PacketEncDec.INSTANCE.encode(ctx.alloc().ioBuffer(),messageResponsePacket);
+            ctx.channel().writeAndFlush(resp);
         }
 
     }

@@ -1,10 +1,19 @@
 package cqu.client;
 
+import cqu.Util.Session.LoginUtil;
 import cqu.client.handler.SimpleClientHandler;
+import cqu.protocal.EncoderDecoder.PacketEncDec;
+import cqu.protocal.PacketImp.MessageRequestPacket;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import sun.misc.Queue;
+
+import java.util.Scanner;
 
 public class WXclient {
     public static void main(String[] args){
@@ -31,6 +40,8 @@ public class WXclient {
         bootstrap.connect(host,port).addListener(future -> {
                     if(future.isSuccess()){
                         System.out.println("connet sucess in host:"+host);
+                        Channel channel = ((ChannelFuture) future).channel();
+                        startConsoleThread(channel);
                     }else if(retry==0){
                         System.out.println("connet host error ,stop");
                     }else{
@@ -40,4 +51,22 @@ public class WXclient {
                 }
         );
     }
+
+    private static void startConsoleThread(Channel channel) {
+        new Thread(() -> {
+            Scanner sc = new Scanner(System.in);
+            while (!Thread.interrupted()) {
+                if (LoginUtil.hasLogin(channel)) {
+                    System.out.println("输入消息发送至服务端: ");
+                    String line = sc.next();
+
+                    MessageRequestPacket packet = new MessageRequestPacket();
+                    packet.setMessage(line);
+                    ByteBuf byteBuf = PacketEncDec.INSTANCE.encode(channel.alloc().ioBuffer(), packet);
+                    channel.writeAndFlush(byteBuf);
+                }
+            }
+        }).start();
+    }
+
 }

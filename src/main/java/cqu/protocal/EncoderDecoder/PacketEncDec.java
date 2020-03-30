@@ -5,14 +5,15 @@ import cqu.Util.Serializer.imp.JSONSerializer;
 import cqu.protocal.Packet;
 import cqu.protocal.PacketImp.LoginRequestPacket;
 import cqu.protocal.PacketImp.LoginResponsePacket;
+import cqu.protocal.PacketImp.MessageRequestPacket;
+import cqu.protocal.PacketImp.MessageResponsePacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static cqu.protocal.Command.LOGIN_REQUEST;
-import static cqu.protocal.Command.LOGIN_RESPONSE;
+import static cqu.protocal.Command.*;
 
 public class PacketEncDec {
     public static  PacketEncDec INSTANCE=new PacketEncDec();
@@ -24,6 +25,8 @@ public class PacketEncDec {
         packetTypeMap = new HashMap<>();
         packetTypeMap.put(LOGIN_REQUEST, LoginRequestPacket.class);
         packetTypeMap.put(LOGIN_RESPONSE, LoginResponsePacket.class);
+        packetTypeMap.put(MESSAGE_REQUEST, MessageRequestPacket.class);
+        packetTypeMap.put(MESSAGE_RESPONSE, MessageResponsePacket.class);
 
         serializerMap = new HashMap<>();
         Serializer serializer = new JSONSerializer();

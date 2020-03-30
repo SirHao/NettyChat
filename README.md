@@ -18,7 +18,17 @@
 
   <img src="C:\Users\27751\AppData\Roaming\Typora\typora-user-images\image-20200315174847651.png" alt="image-20200315174847651" style="zoom:73%;" />
 
++ 2020-3-30 新增登录之后，对于登录状态的存储，能够判断用户是否登录，如果登录，用户可以发送消息请求到服务端，服务端接收用户请求并通过消息响应包返回收到的消息
 
+  + server:
+
+    <img src="C:\Users\27751\AppData\Roaming\Typora\typora-user-images\image-20200330152501128.png" alt="image-20200330152501128" style="zoom:70%;" />
+
+  + client:
+
+    <img src="C:\Users\27751\AppData\Roaming\Typora\typora-user-images\image-20200330152531541.png" alt="image-20200330152531541" style="zoom:60%;" />
+
+> 目前存在bug:由于把登录的方式放在channel active的时候调用，scanner调用后关闭System in导致无法在其他地方使用Scanner读取命令行输入，目前先通过代码自动登录，后期迁移至其他地方登录
 
 
 
