@@ -3,12 +3,11 @@ package cqu.protocal.EncoderDecoder;
 import cqu.Util.Serializer.Serializer;
 import cqu.Util.Serializer.imp.JSONSerializer;
 import cqu.protocal.Packet;
-import cqu.protocal.PacketImp.LoginRequestPacket;
-import cqu.protocal.PacketImp.LoginResponsePacket;
-import cqu.protocal.PacketImp.MessageRequestPacket;
-import cqu.protocal.PacketImp.MessageResponsePacket;
+import cqu.protocal.PacketImp.Request.LoginRequestPacket;
+import cqu.protocal.PacketImp.Response.LoginResponsePacket;
+import cqu.protocal.PacketImp.Request.MessageRequestPacket;
+import cqu.protocal.PacketImp.Response.MessageResponsePacket;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 
 import java.util.HashMap;
 import java.util.Map;

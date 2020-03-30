@@ -3,9 +3,7 @@ package cqu;
 import static org.junit.Assert.assertTrue;
 
 import cqu.protocal.EncoderDecoder.PacketEncDec;
-import cqu.protocal.Packet;
-import cqu.protocal.PacketImp.LoginRequestPacket;
-import io.netty.buffer.ByteBuf;
+import cqu.protocal.PacketImp.Request.LoginRequestPacket;
 import org.junit.Test;
 
 /**

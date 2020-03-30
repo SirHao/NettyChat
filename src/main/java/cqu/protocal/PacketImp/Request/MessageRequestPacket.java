@@ -1,4 +1,4 @@
-package cqu.protocal.PacketImp;
+package cqu.protocal.PacketImp.Request;
 
 import cqu.protocal.Packet;
 

@@ -1,6 +1,9 @@
 package cqu.server;
 
-import cqu.server.handler.SimpleServerHandler;
+import cqu.protocal.EncoderDecoder.Handler.PacketDecoder;
+import cqu.protocal.EncoderDecoder.Handler.PacketEncoder;
+import cqu.server.handler.LoginRequestHandler;
+import cqu.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -21,8 +24,11 @@ public class WXserver {
                 .childHandler(
                         new ChannelInitializer<NioSocketChannel>() {
                             @Override
-                            protected void initChannel(NioSocketChannel nioSocketChannel) throws Exception {
-                                nioSocketChannel.pipeline().addLast( new SimpleServerHandler());
+                            protected void initChannel(NioSocketChannel ch) throws Exception {
+                                ch.pipeline().addLast(new PacketDecoder());
+                                ch.pipeline().addLast(new LoginRequestHandler());
+                                ch.pipeline().addLast(new MessageRequestHandler());
+                                ch.pipeline().addLast(new PacketEncoder());
                             }
                         }
                 );
